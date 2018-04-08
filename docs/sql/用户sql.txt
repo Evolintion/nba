@@ -1,0 +1,12 @@
+-- ===================================用户===================================
+-- 用户表
+create table user(
+id bigint auto_increment primary key ,
+user_name VARCHAR(100),
+nick_name VARCHAR(100),
+password VARCHAR(100),
+team_name VARCHAR(100),
+gold BIGINT,
+ep BIGINT
+)
+ENGINE=InnoDB  DEFAULT CHARSET=utf8;

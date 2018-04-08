@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enesmumu.nba.platform.user.dao.IUserDao">
+	<resultMap id="BaseResultMap"
+		type="com.enesmumu.nba.platform.user.pojo.User">
+		<result column="id" 					property="id" 				jdbcType="BIGINT"/>
+		<result column="user_name" 			property="userName" 			jdbcType="VARCHAR"/>
+		<result column="password" 			property="password" 			jdbcType="VARCHAR"/>	
+	</resultMap>
+	<!-- 除去主键的字段 -->
+	<sql id="Base_Column_List">
+		user_name
+		,password
+	</sql>
+	<!-- 数据库表名 -->
+	<sql id="name">
+		user
+	</sql>
+	<!-- 根据id查询 -->
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		*
+		from 
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+		where id=#{id}
+	</select>
+	<!-- 根据ids查询 -->
+	<select id="findByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+		select
+		*
+		from
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach>
+	</select>
+	<!-- 根据多重条件查询  -->
+	<select id="findByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		*
+		from
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+		where 1=1
+		<if test="id != null and id != '' ">
+			and id = #{id}
+		</if>
+		<if test="ids != null">
+			and id in 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+			  #{item}
+			</foreach>
+		</if>
+		<if test="userName != null and userName != '' ">  
+            and user_name = #{userName}   
+        </if>
+	</select>
+	<!-- 插入语句 -->
+	<insert id="insert" parameterType="com.enesmumu.nba.platform.user.pojo.User" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+		(
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.Base_Column_List"/>
+		)
+		values
+		(
+			 #{userName}
+			 ,#{password}
+		)
+	</insert>
+	<!-- 批量插入语句  -->
+	<insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+		(
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.Base_Column_List"/>
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			 (
+			 #{item.userName}
+			 ,#{item.password}
+			 )  
+		</foreach>
+	</insert>
+	<!-- 修改  -->
+	<update id="update" parameterType="com.enesmumu.nba.platform.user.pojo.User">
+	update 
+		<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+	set
+		user_name = #{userName}
+		,password = #{password}
+    where id = #{id}
+	</update>
+	<!-- 批量修改 -->
+	<update id="updateList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";"> 
+			update 
+				<include refid="com.enesmumu.nba.platform.user.dao.IUserDao.name"/>
+			<set>
+				user_name = #{item.userName}
+				,password = #{item.password}
+			</set>
+			where id = #{item.id}
+		 </foreach>
+	</update>
+</mapper>

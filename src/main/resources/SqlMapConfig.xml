@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- <settings>  
+  	<setting name="logImpl" value="LOG4J"/>  
+  </settings> -->  
+  <!-- <typeHandlers>
+  <typeHandler  handler="cn.webpie.crowdsource.service.base.utils.StringArrayTypeHandler" javaType="[Ljava.lang.String;"  jdbcType="VARCHAR" />
+  </typeHandlers> -->
+  <mappers>
+  	<mapper resource="com/enesmumu/nba/platform/user/mapping/User_SqlMap.xml"/>
+  </mappers>
+</configuration>
